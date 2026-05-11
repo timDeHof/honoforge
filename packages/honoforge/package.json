@@ -1,0 +1,74 @@
+{
+  "name": "honoforge",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Forge type-safe APIs at the speed of flame.",
+  "author": "timDeHof",
+  "license": "MIT",
+  "homepage": "https://github.com/timDeHof/honoforge#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timDeHof/honoforge.git",
+    "directory": "packages/honoforge"
+  },
+  "bugs": "https://github.com/timDeHof/honoforge/issues",
+  "keywords": [
+    "hono",
+    "typescript",
+    "openapi",
+    "status codes",
+    "error handling",
+    "middleware"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    },
+    "./openapi": {
+      "import": { "types": "./dist/openapi/index.d.mts", "default": "./dist/openapi/index.mjs" },
+      "require": { "types": "./dist/openapi/index.d.cts", "default": "./dist/openapi/index.cjs" }
+    },
+    "./middleware": {
+      "import": { "types": "./dist/middleware/index.d.mts", "default": "./dist/middleware/index.mjs" },
+      "require": { "types": "./dist/middleware/index.d.cts", "default": "./dist/middleware/index.cjs" }
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest",
+    "typecheck": "tsc -b tsconfig.json",
+    "lint": "eslint"
+  },
+  "peerDependencies": {
+    "@hono/zod-openapi": ">=1.4.0",
+    "hono": ">=4.10.0",
+    "zod": "^3.25.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@hono/zod-openapi": { "optional": true },
+    "zod": { "optional": true }
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@hono/zod-openapi": "^1.4.0",
+    "hono": "^4.12.18",
+    "tsdown": "^0.22.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6",
+    "zod": "^3.25.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  }
+}

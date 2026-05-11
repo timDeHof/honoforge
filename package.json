@@ -16,8 +16,10 @@
   "keywords": [
     "hono",
     "typescript",
+    "openapi",
     "status codes",
-    "@hono/zod-openapi"
+    "error handling",
+    "middleware"
   ],
   "sideEffects": false,
   "scripts": {

@@ -28,4 +28,10 @@ export default antfu(
       }],
     },
   },
+  {
+    files: ["packages/honoforge/**"],
+    rules: {
+      "func-style": "off",
+    },
+  },
 );
