@@ -25,16 +25,20 @@
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
     "prepublishOnly": "pnpm -r build",
-    "release": "bumpp",
+    "release": "changeset publish",
+    "version-packages": "changeset version",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "prepare": "simple-git-hooks",
     "update-http-statuses": "esno scripts/update-http-statuses.ts"
   },
+  "dependencies": {
+    "@gsd-build/sdk": "^0.1.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
+    "@arethetypeswrong/core": "^0.18.2",
     "@types/node": "^25.6.2",
-    "bumpp": "^11.1.0",
     "eslint": "^10.3.0",
     "eslint-plugin-format": "^2.0.1",
     "esno": "^4.8.0",

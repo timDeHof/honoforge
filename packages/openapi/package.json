@@ -1,18 +1,36 @@
 {
   "name": "@honoforge/openapi",
-  "version": "0.0.0",
   "type": "module",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.mts",
+  "version": "0.1.0",
+  "author": "timDeHof",
+  "license": "MIT",
+  "homepage": "https://github.com/timDeHof/honoforge#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timDeHof/honoforge.git",
+    "directory": "packages/openapi"
+  },
+  "bugs": "https://github.com/timDeHof/honoforge/issues",
+  "sideEffects": false,
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
-      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
-  "files": ["dist"],
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
     "test": "vitest",
@@ -25,9 +43,15 @@
     "zod": "^3.25.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
-    "hono": { "optional": false },
-    "zod": { "optional": false },
-    "@hono/zod-openapi": { "optional": false }
+    "@hono/zod-openapi": {
+      "optional": false
+    },
+    "hono": {
+      "optional": false
+    },
+    "zod": {
+      "optional": false
+    }
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.5.0",
@@ -45,15 +69,5 @@
     "registry": "https://registry.npmjs.org",
     "access": "public",
     "provenance": true
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/timDeHof/honoforge.git",
-    "directory": "packages/openapi"
-  },
-  "homepage": "https://github.com/timDeHof/honoforge#readme",
-  "bugs": "https://github.com/timDeHof/honoforge/issues",
-  "license": "MIT",
-  "author": "timDeHof",
-  "sideEffects": false
+  }
 }
