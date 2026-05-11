@@ -7,9 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@honoforge/core",
-    "@honoforge/openapi",
-    "@honoforge/middleware"
-  ]
+  "ignore": []
 }
