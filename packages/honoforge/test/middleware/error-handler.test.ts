@@ -5,6 +5,8 @@ import { describe, expect, it } from "vitest";
 
 import { createErrorHandler } from "../../src/middleware/error-handler.js";
 
+type TestRouteClient = Record<string, { $get: () => Promise<Response> }>;
+
 describe("errorHandler middleware", () => {
   it("catches a thrown Error and returns problem+json response", async () => {
     const app = new Hono();
@@ -13,7 +15,8 @@ describe("errorHandler middleware", () => {
       throw new Error("Something went wrong");
     });
 
-    const res = await testClient(app).error.$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client.error.$get();
     expect(res.status).toBe(500);
     expect(res.headers.get("content-type")).toContain("application/problem+json");
 
@@ -33,7 +36,8 @@ describe("errorHandler middleware", () => {
       throw new HTTPException(404, { message: "Resource not found" });
     });
 
-    const res = await testClient(app)["not-found"].$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client["not-found"].$get();
     expect(res.status).toBe(404);
 
     const body = await res.json();
@@ -46,7 +50,8 @@ describe("errorHandler middleware", () => {
     app.onError(createErrorHandler());
     app.get("/ok", c => c.json({ message: "success" }));
 
-    const res = await testClient(app).ok.$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client.ok.$get();
     expect(res.status).toBe(200);
 
     const body = await res.json();
@@ -60,7 +65,8 @@ describe("errorHandler middleware", () => {
       throw new Error("fail");
     });
 
-    const res = await testClient(app).fail.$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client.fail.$get();
     const contentType = res.headers.get("content-type");
     expect(contentType).toContain("application/problem+json");
   });
@@ -72,7 +78,8 @@ describe("errorHandler middleware", () => {
       throw new Error("test error");
     });
 
-    const res = await testClient(app).fail.$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client.fail.$get();
     const body = await res.json();
 
     expect(body).toHaveProperty("type");
@@ -88,7 +95,8 @@ describe("errorHandler middleware", () => {
       throw new Error("Sensitive internal details: SQL query failed");
     });
 
-    const res = await testClient(app).fail.$get();
+    const client = testClient(app) as unknown as TestRouteClient;
+    const res = await client.fail.$get();
     const body = await res.json();
 
     expect(body.detail).toBe("An internal server error occurred");

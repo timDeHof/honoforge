@@ -14,6 +14,20 @@ export interface ZodToOpenAPIOptions {
   description?: string;
 }
 
+/** Minimal interface for Zod's internal _def structure. */
+interface ZodDefLike {
+  typeName: string;
+  type?: ZodType;
+  innerType?: ZodType;
+  schema?: ZodType;
+  shape?: () => Record<string, ZodType>;
+  values?: string[] | Record<string, string>;
+  value?: unknown;
+  options?: ZodType[];
+  items?: ZodType[];
+  valueType?: ZodType;
+}
+
 /**
  * Convert a Zod schema to an OpenAPI 3.x schema object.
  *
@@ -35,7 +49,7 @@ function convertZodSchema(
   schema: ZodType,
   description?: string,
 ): Record<string, unknown> {
-  const zodDef = (schema as any)._def;
+  const zodDef = (schema as unknown as { _def: ZodDefLike })._def;
 
   if (!zodDef) {
     return description ? { description } : {};
@@ -65,17 +79,17 @@ function convertZodSchema(
     case "ZodArray":
       result = {
         type: "array",
-        items: convertZodSchema(zodDef.type),
+        items: convertZodSchema(zodDef.type!),
       };
       break;
 
     case "ZodObject": {
-      const shape = zodDef.shape();
+      const shape = zodDef.shape!();
       const properties: Record<string, unknown> = {};
       const required: string[] = [];
 
       for (const [key, value] of Object.entries(shape)) {
-        const valueDef = (value as any)._def;
+        const valueDef = (value as unknown as { _def: ZodDefLike })._def;
         properties[key] = convertZodSchema(value);
         if (valueDef.typeName !== "ZodOptional") {
           required.push(key);
@@ -90,11 +104,11 @@ function convertZodSchema(
     }
 
     case "ZodOptional":
-      result = convertZodSchema(zodDef.innerType);
+      result = convertZodSchema(zodDef.innerType!);
       break;
 
     case "ZodNullable":
-      result = { ...convertZodSchema(zodDef.innerType), nullable: true };
+      result = { ...convertZodSchema(zodDef.innerType!), nullable: true };
       break;
 
     case "ZodEnum":
@@ -102,7 +116,7 @@ function convertZodSchema(
       break;
 
     case "ZodNativeEnum":
-      result = { type: "string", enum: Object.values(zodDef.values) };
+      result = { type: "string", enum: Object.values(zodDef.values!) };
       break;
 
     case "ZodLiteral":
@@ -112,21 +126,21 @@ function convertZodSchema(
     case "ZodUnion":
     case "ZodDiscriminatedUnion":
       result = {
-        oneOf: zodDef.options.map((opt: ZodType) => convertZodSchema(opt)),
+        oneOf: zodDef.options!.map(opt => convertZodSchema(opt)),
       };
       break;
 
     case "ZodTuple":
       result = {
         type: "array",
-        items: zodDef.items.map((item: ZodType) => convertZodSchema(item)),
+        items: zodDef.items!.map(item => convertZodSchema(item)),
       };
       break;
 
     case "ZodRecord":
       result = {
         type: "object",
-        additionalProperties: convertZodSchema(zodDef.valueType),
+        additionalProperties: convertZodSchema(zodDef.valueType!),
       };
       break;
 
@@ -137,7 +151,7 @@ function convertZodSchema(
     case "ZodSet":
       result = {
         type: "array",
-        items: convertZodSchema(zodDef.valueType),
+        items: convertZodSchema(zodDef.valueType!),
         uniqueItems: true,
       };
       break;
@@ -160,12 +174,12 @@ function convertZodSchema(
       break;
 
     case "ZodDefault":
-      result = convertZodSchema(zodDef.innerType);
+      result = convertZodSchema(zodDef.innerType!);
       break;
 
     case "ZodEffects":
       // For .transform(), .refine(), .pipe() — convert the inner type
-      result = convertZodSchema(zodDef.schema || zodDef.innerType);
+      result = convertZodSchema(zodDef.schema ?? zodDef.innerType!);
       break;
 
     default:

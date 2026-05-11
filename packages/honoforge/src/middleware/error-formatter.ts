@@ -40,6 +40,12 @@ const STATUS_PHRASES: Record<number, string> = {
  * @param options - Optional overrides for Problem Details fields
  * @returns RFC 9457 Problem Details object
  */
+interface ErrorLike {
+  status: number;
+  name?: unknown;
+  message?: unknown;
+}
+
 export function formatError(
   error: unknown,
   options?: Partial<ProblemDetailsOptions>,
@@ -54,9 +60,9 @@ export function formatError(
     typeof error === "object"
     && error !== null
     && "status" in error
-    && typeof (error as any).status === "number"
+    && typeof (error as ErrorLike).status === "number"
   ) {
-    const err = error as Record<string, unknown>;
+    const err = error as ErrorLike;
     const status = err.status as number;
     return formatProblemDetails({
       status,

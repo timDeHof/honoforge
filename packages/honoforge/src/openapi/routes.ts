@@ -15,6 +15,12 @@ interface RegistryDefinition {
   route?: RouteConfig;
 }
 
+interface OpenAPIHonoLike {
+  openAPIRegistry?: {
+    _definitions?: Array<{ type: string; route?: RouteConfig }>;
+  };
+}
+
 /**
  * Extract full metadata from all routes registered on an OpenAPIHono instance.
  *
@@ -22,7 +28,7 @@ interface RegistryDefinition {
  * @returns Array of route metadata objects
  */
 export function extractRouteMetadata(app: OpenAPIHono): RouteMetadata[] {
-  const registry = (app as any).openAPIRegistry;
+  const registry = (app as unknown as OpenAPIHonoLike).openAPIRegistry;
   if (!registry) {
     return [];
   }
@@ -73,7 +79,7 @@ export function extractRouteMetadata(app: OpenAPIHono): RouteMetadata[] {
     if (route.responses) {
       const responseSchemas: Record<number, Record<string, unknown>> = {};
       for (const [status, response] of Object.entries(route.responses)) {
-        const resp = response as Record<string, unknown>;
+        const resp = response as unknown as Record<string, unknown>;
         responseSchemas[Number(status)] = resp as Record<string, unknown>;
       }
       if (Object.keys(responseSchemas).length > 0) {

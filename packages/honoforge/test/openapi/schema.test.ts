@@ -49,8 +49,9 @@ describe("zodToOpenAPI", () => {
       },
     });
     // Optional fields should not be in the required array
-    if (result.required) {
-      expect((result as any).required).not.toContain("email");
+    const required = result.required as string[] | undefined;
+    if (required) {
+      expect(required).not.toContain("email");
     }
   });
 

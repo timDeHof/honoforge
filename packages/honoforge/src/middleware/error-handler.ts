@@ -1,4 +1,5 @@
 import type { ErrorHandler, MiddlewareHandler } from "hono";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 import type { ForgeEnv } from "../types.js";
 
@@ -30,7 +31,7 @@ export const createErrorHandler = (options?: ErrorHandlerOptions): ErrorHandler 
       problem.detail = "An internal server error occurred";
     }
 
-    return c.json(problem, problem.status, {
+    return c.json(problem, problem.status as ContentfulStatusCode, {
       "Content-Type": "application/problem+json",
     });
   };

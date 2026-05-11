@@ -3,6 +3,12 @@ import type { MiddlewareHandler } from "hono";
 
 import { stringify } from "yaml";
 
+interface OpenAPIHonoLike {
+  openAPIRegistry?: {
+    _definitions?: Array<{ type: string; route?: { path: string; method: string; responses?: Record<string, unknown>; summary?: string; description?: string; tags?: string[]; operationId?: string; request?: Record<string, unknown> } }>;
+  };
+}
+
 export interface OpenAPIDocConfig {
   title: string;
   version: string;
@@ -37,7 +43,7 @@ export function generateOpenAPIDoc(
   app: OpenAPIHono,
   config: OpenAPIDocConfig,
 ): OpenAPIObject {
-  const registry = (app as any).openAPIRegistry;
+  const registry = (app as unknown as OpenAPIHonoLike).openAPIRegistry;
   const definitions = registry?._definitions || [];
   const routes = definitions
     .filter((d: any) => d.type === "route" && d.route)
@@ -75,7 +81,7 @@ export function generateOpenAPIDoc(
 
       if (req.params) {
         // Extract path parameters from the route path
-        const pathParams = route.path.match(/\{(\w+)\}/g)?.map(p => p.slice(1, -1)) || [];
+        const pathParams = route.path.match(/\{(\w+)\}/g)?.map((p: string) => p.slice(1, -1)) || [];
         for (const param of pathParams) {
           parameters.push({
             name: param,
