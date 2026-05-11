@@ -2,6 +2,7 @@
   "name": "honoforge",
   "type": "module",
   "version": "0.0.0",
+  "private": true,
   "packageManager": "pnpm@10.33.1",
   "description": "Forge type-safe APIs at the speed of flame.",
   "author": "timDeHof",
@@ -19,23 +20,14 @@
     "@hono/zod-openapi"
   ],
   "sideEffects": false,
-  "exports": {
-    ".": "./dist/index.mjs",
-    "./package.json": "./package.json"
-  },
-  "types": "./dist/index.d.mts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsdown",
-    "dev": "tsdown --watch",
-    "lint": "eslint",
-    "prepublishOnly": "nr build",
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "lint": "pnpm -r lint",
+    "prepublishOnly": "pnpm -r build",
     "release": "bumpp",
-    "start": "tsx src/index.ts",
-    "test": "pnpm run build && vitest",
-    "typecheck": "tsc",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
     "prepare": "simple-git-hooks",
     "update-http-statuses": "esno scripts/update-http-statuses.ts"
   },

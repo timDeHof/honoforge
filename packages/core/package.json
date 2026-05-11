@@ -1,0 +1,43 @@
+{
+  "name": "@honoforge/core",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest",
+    "typecheck": "tsc -b tsconfig.json",
+    "lint": "eslint"
+  },
+  "peerDependencies": {
+    "hono": ">=4.10.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": { "optional": false }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timDeHof/honoforge.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/timDeHof/honoforge#readme",
+  "bugs": "https://github.com/timDeHof/honoforge/issues",
+  "license": "MIT",
+  "author": "timDeHof",
+  "sideEffects": false
+}
