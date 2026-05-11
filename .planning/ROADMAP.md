@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Core Package** — Establish `@honoforge/core` with proper package conventions, migrate HTTP status utilities, and create shared type infrastructure.
+- [x] **Phase 1: Foundation & Core Package** — Establish `@honoforge/core` with proper package conventions, migrate HTTP status utilities, and create shared type infrastructure.
 - [ ] **Phase 2: OpenAPI Utilities & Error Handling** — Build `@honoforge/openapi` and `@honoforge/middleware` (error handling) packages that integrate with `@hono/zod-openapi`.
 
 ## Phase Details
@@ -25,9 +25,9 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold @honoforge/core package with monorepo structure, peer deps, build pipeline
-- [ ] 01-02-PLAN.md — Migrate HTTP status codes and phrases with tests
-- [ ] 01-03-PLAN.md — Create ForgeEnv, ForgeMiddlewareHandler types and ForgeStorage interface
+- [x] 01-01-PLAN.md — Scaffold @honoforge/core package with monorepo structure, peer deps, build pipeline
+- [x] 01-02-PLAN.md — Migrate HTTP status codes and phrases with tests
+- [x] 01-03-PLAN.md — Create ForgeEnv, ForgeMiddlewareHandler types and ForgeStorage interface
 
 **Success Criteria** (what must be TRUE):
 1. `@honoforge/core` publishes to npm with correct peer deps, dual ESM/CJS exports, and type declarations (verified by `attw` + `publint`)
@@ -70,10 +70,10 @@ Phase 2 can build OpenAPI and error handling in parallel because:
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
-| CORE-02 | Phase 1 | Pending |
-| CORE-03 | Phase 1 | Pending |
-| CORE-04 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | ✓ Complete |
+| CORE-02 | Phase 1 | ✓ Complete |
+| CORE-03 | Phase 1 | ✓ Complete |
+| CORE-04 | Phase 1 | ✓ Complete |
 | OPENAPI-01 | Phase 2 | Pending |
 | OPENAPI-02 | Phase 2 | Pending |
 | OPENAPI-03 | Phase 2 | Pending |
@@ -89,5 +89,5 @@ Phase 2 can build OpenAPI and error handling in parallel because:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Core Package | 3/3 | Planned | Wave 1: 01-01, 01-02 | Wave 2: 01-03 |
+| 1. Foundation & Core Package | 3/3 | ✓ Complete | Wave 1: 01-01, 01-02 | Wave 2: 01-03 |
 | 2. OpenAPI Utilities & Error Handling | 0/0 | Not started | - |
