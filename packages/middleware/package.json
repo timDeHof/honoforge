@@ -1,0 +1,50 @@
+{
+  "name": "@honoforge/middleware",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.mts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest",
+    "typecheck": "tsc -b tsconfig.json",
+    "lint": "eslint"
+  },
+  "peerDependencies": {
+    "hono": ">=4.10.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": { "optional": false }
+  },
+  "devDependencies": {
+    "@honoforge/core": "workspace:^",
+    "hono": "^4.12.18",
+    "tsdown": "^0.22.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timDeHof/honoforge.git",
+    "directory": "packages/middleware"
+  },
+  "homepage": "https://github.com/timDeHof/honoforge#readme",
+  "bugs": "https://github.com/timDeHof/honoforge/issues",
+  "license": "MIT",
+  "author": "timDeHof",
+  "sideEffects": false
+}
