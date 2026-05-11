@@ -1,9 +1,9 @@
-import { defineConfig } from 'tsdown'
-import { StaleGuardRecorder } from 'tsdown-stale-guard'
+import { defineConfig } from "tsdown";
+import { StaleGuardRecorder } from "tsdown-stale-guard";
 
 export default defineConfig({
   entry: [
-    'src/index.ts',
+    "src/index.ts",
   ],
   dts: true,
   exports: true,
@@ -11,4 +11,4 @@ export default defineConfig({
   plugins: [
     StaleGuardRecorder(),
   ],
-})
+});

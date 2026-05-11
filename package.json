@@ -36,25 +36,26 @@
     "start": "tsx src/index.ts",
     "test": "pnpm run build && vitest",
     "typecheck": "tsc",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "update-http-statuses": "esno scripts/update-http-statuses.ts"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "catalog:cli",
-    "@antfu/ni": "catalog:cli",
-    "@antfu/utils": "catalog:inlined",
-    "@types/node": "catalog:types",
-    "bumpp": "catalog:cli",
-    "eslint": "catalog:cli",
-    "lint-staged": "catalog:cli",
-    "publint": "catalog:cli",
-    "simple-git-hooks": "catalog:cli",
-    "tsdown": "catalog:cli",
-    "tsdown-stale-guard": "catalog:testing",
-    "tsnapi": "catalog:testing",
-    "tsx": "catalog:cli",
-    "typescript": "catalog:cli",
-    "vite": "catalog:cli",
-    "vitest": "catalog:testing"
+    "@antfu/eslint-config": "^9.0.0",
+    "@types/node": "^25.6.2",
+    "bumpp": "^11.1.0",
+    "eslint": "^10.3.0",
+    "eslint-plugin-format": "^2.0.1",
+    "esno": "^4.8.0",
+    "lint-staged": "^17.0.4",
+    "publint": "^0.3.20",
+    "simple-git-hooks": "^2.13.1",
+    "ts-morph": "^28.0.0",
+    "tsdown": "^0.22.0",
+    "tsdown-stale-guard": "^0.1.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.6"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm run build && npx lint-staged"

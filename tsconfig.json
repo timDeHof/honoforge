@@ -8,8 +8,9 @@
     "strict": true,
     "strictNullChecks": true,
     "noEmit": true,
+    "outDir": "dist",
+    "removeComments": false,
     "esModuleInterop": true,
-    "verbatimModuleSyntax": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   }

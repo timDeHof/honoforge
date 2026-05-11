@@ -1,14 +1,14 @@
-import { fileURLToPath } from 'node:url'
-import { guardStaleBuild } from 'tsdown-stale-guard'
-import { snapshotApiPerEntry } from 'tsnapi/vitest'
-import { beforeAll, describe } from 'vitest'
+import { fileURLToPath } from "node:url";
+import { guardStaleBuild } from "tsdown-stale-guard";
+import { snapshotApiPerEntry } from "tsnapi/vitest";
+import { beforeAll, describe } from "vitest";
 
-const root = fileURLToPath(new URL('..', import.meta.url))
+const root = fileURLToPath(new URL("..", import.meta.url));
 
-describe('api snapshot', () => {
+describe("api snapshot", () => {
   beforeAll(async () => {
-    await guardStaleBuild({ root })
-  })
+    await guardStaleBuild({ root });
+  });
 
-  snapshotApiPerEntry(root)
-})
+  snapshotApiPerEntry(root);
+});
