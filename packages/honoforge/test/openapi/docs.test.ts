@@ -1,7 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { describe, expect, it } from "vitest";
 
-import { generateOpenAPIDoc, generateOpenAPIDocYAML, serveOpenAPIDoc } from "../../src/openapi/docs.js";
+import { generateOpenAPIDoc, generateOpenAPIDocYAML } from "../../src/openapi/docs.js";
 
 describe("generateOpenAPIDoc", () => {
   it("produces valid OpenAPI 3.1 structure", () => {
@@ -39,17 +39,6 @@ describe("generateOpenAPIDoc", () => {
       version: "1.0.0",
     });
     expect(doc.paths).toHaveProperty("/health");
-  });
-});
-
-describe("serveOpenAPIDoc", () => {
-  it("returns a middleware function", () => {
-    const app = new OpenAPIHono();
-    const middleware = serveOpenAPIDoc(app, {
-      title: "Test API",
-      version: "1.0.0",
-    });
-    expect(typeof middleware).toBe("function");
   });
 });
 

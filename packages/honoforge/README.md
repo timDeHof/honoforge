@@ -2,7 +2,7 @@
 
 > Forge type-safe APIs at the speed of flame.
 
-A collection of utilities for the [Hono](https://hono.dev/) ecosystem — OpenAPI schema conversion, typed response builders, route metadata extraction, and RFC 9457 Problem Details error handling.
+A collection of utilities for the [Hono](https://hono.dev/) ecosystem — OpenAPI schema conversion, route metadata extraction, and RFC 9457 Problem Details error handling.
 
 ## Installation
 
@@ -47,7 +47,7 @@ const authMiddleware: ForgeMiddlewareHandler<AppEnv> = async (c, next) => {
 ```ts
 import { z } from "zod";
 
-import { createResponse, extractRouteMetadata, generateOpenAPIDoc, zodToOpenAPI } from "@timdehof/honoforge/openapi";
+import { extractRouteMetadata, generateOpenAPIDoc, zodToOpenAPI } from "@timdehof/honoforge/openapi";
 
 // Convert Zod schemas to OpenAPI 3.x
 const schema = z.object({
@@ -58,12 +58,6 @@ const schema = z.object({
 
 const openapiSchema = zodToOpenAPI(schema);
 // { type: 'object', properties: { id: { type: 'string' }, ... }, required: ['id', 'name', 'email'] }
-
-// Typed response builders
-const response = createResponse({
-  status: HttpStatusCode.OK,
-  data: { id: "1", name: "Alice" },
-});
 
 // Route metadata extraction
 const routes = extractRouteMetadata(app);
@@ -78,14 +72,11 @@ const doc = generateOpenAPIDoc(app, {
 ### Middleware (`@timdehof/honoforge/middleware`)
 
 ```ts
-import { createErrorHandler, errorHandler, formatError } from "@timdehof/honoforge/middleware";
+import { createErrorHandler, formatError } from "@timdehof/honoforge/middleware";
 
 // Global error handling (recommended)
 const app = new Hono();
 app.onError(createErrorHandler());
-
-// Route-specific error handling
-app.use("/api/*", errorHandler());
 
 // Manual error formatting
 const problem = formatError(new Error("Something went wrong"));
@@ -97,11 +88,11 @@ app.onError(createErrorHandler({ isProduction: true }));
 
 ## Subpath Exports
 
-| Import                           | Description                                                              |
-| -------------------------------- | ------------------------------------------------------------------------ |
-| `@timdehof/honoforge`            | Core: HTTP status codes, types, storage interface                        |
-| `@timdehof/honoforge/openapi`    | OpenAPI schema conversion, typed responses, route metadata, docs helpers |
-| `@timdehof/honoforge/middleware` | RFC 9457 error handler, error formatting utilities                       |
+| Import                           | Description                                             |
+| -------------------------------- | ------------------------------------------------------- |
+| `@timdehof/honoforge`            | Core: HTTP status codes, types, storage interface       |
+| `@timdehof/honoforge/openapi`    | OpenAPI schema conversion, route metadata, docs helpers |
+| `@timdehof/honoforge/middleware` | RFC 9457 error handler, error formatting utilities      |
 
 ## Features
 

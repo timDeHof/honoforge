@@ -1,4 +1,8 @@
-import type { OpenAPIHono, RouteConfig } from "@hono/zod-openapi";
+import type { OpenAPIHono } from "@hono/zod-openapi";
+
+import type { RegistryRoute } from "./registry.js";
+
+import { getRegistryRoutes } from "./registry.js";
 
 export interface RouteMetadata {
   method: string;
@@ -10,15 +14,54 @@ export interface RouteMetadata {
   responseSchemas?: Record<number, Record<string, unknown>>;
 }
 
-interface RegistryDefinition {
-  type: string;
-  route?: RouteConfig;
-}
-
-interface OpenAPIHonoLike {
-  openAPIRegistry?: {
-    _definitions?: Array<{ type: string; route?: RouteConfig }>;
+function toRouteMetadata(route: RegistryRoute): RouteMetadata {
+  const metadata: RouteMetadata = {
+    method: route.method,
+    path: route.path,
   };
+
+  if (route.summary) {
+    metadata.summary = route.summary;
+  }
+  if (route.description) {
+    metadata.description = route.description;
+  }
+  if (route.tags) {
+    metadata.tags = route.tags;
+  }
+
+  // Extract request schema if present
+  if (route.request) {
+    const requestSchema: Record<string, unknown> = {};
+    if (route.request.query) {
+      requestSchema.query = route.request.query;
+    }
+    if (route.request.params) {
+      requestSchema.params = route.request.params;
+    }
+    if (route.request.headers) {
+      requestSchema.headers = route.request.headers;
+    }
+    if (route.request.body) {
+      requestSchema.body = route.request.body;
+    }
+    if (Object.keys(requestSchema).length > 0) {
+      metadata.requestSchema = requestSchema;
+    }
+  }
+
+  // Extract response schemas
+  if (route.responses) {
+    const responseSchemas: Record<number, Record<string, unknown>> = {};
+    for (const [status, response] of Object.entries(route.responses)) {
+      responseSchemas[Number(status)] = response as Record<string, unknown>;
+    }
+    if (Object.keys(responseSchemas).length > 0) {
+      metadata.responseSchemas = responseSchemas;
+    }
+  }
+
+  return metadata;
 }
 
 /**
@@ -28,67 +71,7 @@ interface OpenAPIHonoLike {
  * @returns Array of route metadata objects
  */
 export function extractRouteMetadata(app: OpenAPIHono): RouteMetadata[] {
-  const registry = (app as unknown as OpenAPIHonoLike).openAPIRegistry;
-  if (!registry) {
-    return [];
-  }
-
-  const definitions: RegistryDefinition[] = registry._definitions || [];
-  const routes = definitions
-    .filter(d => d.type === "route" && d.route)
-    .map(d => d.route!);
-
-  return routes.map((route) => {
-    const metadata: RouteMetadata = {
-      method: route.method,
-      path: route.path,
-    };
-
-    if (route.summary) {
-      metadata.summary = route.summary;
-    }
-    if (route.description) {
-      metadata.description = route.description;
-    }
-    if (route.tags) {
-      metadata.tags = route.tags;
-    }
-
-    // Extract request schema if present
-    if (route.request) {
-      const req = route.request as Record<string, unknown>;
-      const requestSchema: Record<string, unknown> = {};
-      if (req.query) {
-        requestSchema.query = req.query;
-      }
-      if (req.params) {
-        requestSchema.params = req.params;
-      }
-      if (req.headers) {
-        requestSchema.headers = req.headers;
-      }
-      if (req.body) {
-        requestSchema.body = req.body;
-      }
-      if (Object.keys(requestSchema).length > 0) {
-        metadata.requestSchema = requestSchema;
-      }
-    }
-
-    // Extract response schemas
-    if (route.responses) {
-      const responseSchemas: Record<number, Record<string, unknown>> = {};
-      for (const [status, response] of Object.entries(route.responses)) {
-        const resp = response as unknown as Record<string, unknown>;
-        responseSchemas[Number(status)] = resp as Record<string, unknown>;
-      }
-      if (Object.keys(responseSchemas).length > 0) {
-        metadata.responseSchemas = responseSchemas;
-      }
-    }
-
-    return metadata;
-  });
+  return getRegistryRoutes(app).map(toRouteMetadata);
 }
 
 /**

@@ -4,7 +4,6 @@ import type { ProblemDetails, ProblemDetailsOptions } from "../../src/middleware
 
 import {
   createErrorHandler,
-  errorHandler,
   formatError,
   formatHTTPError,
   formatProblemDetails,
@@ -27,10 +26,6 @@ describe("cross-runtime", () => {
       title: "OK",
       status: 200,
     });
-  });
-
-  it("imports errorHandler as a function", () => {
-    expect(typeof errorHandler).toBe("function");
   });
 
   it("imports createErrorHandler as a function", () => {

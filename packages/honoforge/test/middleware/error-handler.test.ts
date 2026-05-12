@@ -7,7 +7,7 @@ import { createErrorHandler } from "../../src/middleware/error-handler.js";
 
 type TestRouteClient = Record<string, { $get: () => Promise<Response> }>;
 
-describe("errorHandler middleware", () => {
+describe("createErrorHandler", () => {
   it("catches a thrown Error and returns problem+json response", async () => {
     const app = new Hono();
     app.onError(createErrorHandler());

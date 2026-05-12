@@ -1,24 +1,13 @@
 import type { OpenAPIHono } from "@hono/zod-openapi";
-import type { MiddlewareHandler } from "hono";
 
 import { stringify } from "yaml";
 
-interface OpenAPIHonoLike {
-  openAPIRegistry?: {
-    _definitions?: Array<{ type: string; route?: { path: string; method: string; responses?: Record<string, unknown>; summary?: string; description?: string; tags?: string[]; operationId?: string; request?: Record<string, unknown> } }>;
-  };
-}
+import { getRegistryRoutes } from "./registry.js";
 
 export interface OpenAPIDocConfig {
   title: string;
   version: string;
   description?: string;
-}
-
-export interface OpenAPIServeConfig {
-  title: string;
-  version: string;
-  path?: string;
 }
 
 export interface OpenAPIObject {
@@ -43,11 +32,7 @@ export function generateOpenAPIDoc(
   app: OpenAPIHono,
   config: OpenAPIDocConfig,
 ): OpenAPIObject {
-  const registry = (app as unknown as OpenAPIHonoLike).openAPIRegistry;
-  const definitions = registry?._definitions || [];
-  const routes = definitions
-    .filter((d: any) => d.type === "route" && d.route)
-    .map((d: any) => d.route);
+  const routes = getRegistryRoutes(app);
 
   const paths: Record<string, Record<string, unknown>> = {};
 
@@ -76,10 +61,9 @@ export function generateOpenAPIDoc(
 
     // Build request body / parameters
     if (route.request) {
-      const req = route.request as Record<string, unknown>;
       const parameters: Array<Record<string, unknown>> = [];
 
-      if (req.params) {
+      if (route.request.params) {
         // Extract path parameters from the route path
         const pathParams = route.path.match(/\{(\w+)\}/g)?.map((p: string) => p.slice(1, -1)) || [];
         for (const param of pathParams) {
@@ -92,7 +76,7 @@ export function generateOpenAPIDoc(
         }
       }
 
-      if (req.query) {
+      if (route.request.query) {
         parameters.push({
           name: "query",
           in: "query",
@@ -100,7 +84,7 @@ export function generateOpenAPIDoc(
         });
       }
 
-      if (req.headers) {
+      if (route.request.headers) {
         parameters.push({
           name: "headers",
           in: "header",
@@ -112,7 +96,7 @@ export function generateOpenAPIDoc(
         operation.parameters = parameters;
       }
 
-      if (req.body) {
+      if (route.request.body) {
         operation.requestBody = {
           content: {
             "application/json": {
@@ -137,33 +121,6 @@ export function generateOpenAPIDoc(
   };
 
   return doc;
-}
-
-/**
- * Create a Hono middleware handler that serves the OpenAPI JSON document.
- *
- * @param app - The OpenAPIHono instance
- * @param config - Serve configuration (title, version, optional path)
- * @returns Hono middleware handler
- */
-export function serveOpenAPIDoc(
-  app: OpenAPIHono,
-  config: OpenAPIServeConfig,
-): MiddlewareHandler {
-  const servePath = config.path || "/openapi";
-  const doc = generateOpenAPIDoc(app, {
-    title: config.title,
-    version: config.version,
-  });
-
-  return async (c, next) => {
-    if (c.req.path === servePath && c.req.method === "GET") {
-      return c.json(doc, 200, {
-        "Content-Type": "application/json",
-      });
-    }
-    return next();
-  };
 }
 
 /**
