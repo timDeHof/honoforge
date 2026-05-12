@@ -128,9 +128,9 @@ Please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
 <!-- Badges -->
 
 [npm-version-src]: https://img.shields.io/npm/v/honoforge?style=flat&colorA=080f12&colorB=1fa669
-[npm-version-href]: https://npmjs.com/package/honoforge
+[npm-version-href]: https://npmjs.com/package/@timdehof/honoforge
 [npm-downloads-src]: https://img.shields.io/npm/dm/honoforge?style=flat&colorA=080f12&colorB=1fa669
-[npm-downloads-href]: https://npmjs.com/package/honoforge
+[npm-downloads-href]: https://npmjs.com/package/@timdehof/honoforge
 [bundle-src]: https://img.shields.io/bundlephobia/minzip/honoforge?style=flat&colorA=080f12&colorB=1fa669&label=minzip
 [bundle-href]: https://bundlephobia.com/result?p=honoforge
 [license-src]: https://img.shields.io/github/license/timDeHof/honoforge.svg?style=flat&colorA=080f12&colorB=1fa669
