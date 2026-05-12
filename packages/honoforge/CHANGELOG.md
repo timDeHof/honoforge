@@ -1,5 +1,11 @@
 # @timdehof/honoforge
 
+## 0.2.2
+
+### Patch Changes
+
+- 5b7e1c3: Add README.md to published package.
+
 ## 0.2.1
 
 ### Patch Changes
